@@ -10,12 +10,11 @@ async function main() {
     message: '请选择版本号变更规则: ',
     choices: [{ value: VersionMode.major }, { value: VersionMode.minor }, { value: VersionMode.patch }],
   });
-  const features = await input({
-    message: '请输入版本特性: ',
-    transformer(val) {
-      return val.trim();
-    },
-  });
+  const features = (
+    await input({
+      message: '请输入版本特性: ',
+    })
+  ).trim();
 
   context.checkout();
   context.version(version);
