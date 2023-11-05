@@ -4,7 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
 
-const external = [];
+const external = ['shelljs'];
 
 function getConfig(format, banner) {
   return {
