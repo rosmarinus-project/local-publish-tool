@@ -12,8 +12,8 @@
     "rosmarinus-publish": "dist/cjs/index.js"
   },
   "scripts": {
-    "dev": "rollup -c rollup.config.js -w",
-    "build": "rimraf dist && rollup -c rollup.config.js",
+    "dev": "rollup -c rollup.config.mjs -w",
+    "build": "rimraf dist && rollup -c rollup.config.mjs",
     "release": "npm run build && node dist/cjs/index.js publish",
     "test:unit": "jest --runInBand"
   },
@@ -46,7 +46,7 @@
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-typescript": "^8.3.1",
+    "@rollup/plugin-typescript": "^11.1.5",
     "@rosmarinus/eslint-config-rosmarinus": "^1.0.1",
     "@types/fs-extra": "^9.0.12",
     "@types/jest": "^27.4.0",
@@ -57,7 +57,7 @@
     "jest-json-reporter": "^1.2.2",
     "lint-staged": "^11.1.2",
     "rimraf": "^5.0.5",
-    "rollup": "^2.70.0",
+    "rollup": "^4.3.0",
     "semver": "^7.3.5",
     "typescript": "^5.2.2"
   },
