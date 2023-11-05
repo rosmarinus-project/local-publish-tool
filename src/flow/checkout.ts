@@ -1,4 +1,5 @@
 import shell from 'shelljs';
+import i18n from '@rosmarinus/i18n';
 import { PkgManager } from '../enum';
 
 export interface CheckoutParams {
@@ -18,14 +19,14 @@ export function checkout(params: CheckoutParams) {
   const gitChanges = shell.exec('git status --porcelain', { cwd }).stdout;
 
   if (gitChanges) {
-    console.log('当前本地有修改未提交，发布终止: ', gitChanges);
+    console.log(i18n().t('local-publish-tool.git-change-warn'), gitChanges);
     process.exit(1);
   }
 
-  console.log('正在清除当前分支改动');
+  console.log(i18n().t('local-publish-tool.clean-warn'));
   shell.exec('git checkout .', { cwd, silent: true });
   shell.exec('git clean -df', { cwd, silent: true });
-  console.log(`正在切换至最新 ${params.master} 分支`);
+  console.log(i18n().t('local-publish-tool.checkout', params.master));
   shell.exec(`git checkout ${params.master}`, { cwd, silent: true });
   shell.exec('git pull', { cwd, silent: true });
 
@@ -34,6 +35,6 @@ export function checkout(params: CheckoutParams) {
   if (installCmd) {
     shell.exec(installCmd, { cwd, silent: true });
   } else {
-    console.warn('未检测到包管理器，跳过安装依赖');
+    console.warn(i18n().t('local-publish-tool.no-pkg-mgr'));
   }
 }

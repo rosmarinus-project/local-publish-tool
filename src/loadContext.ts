@@ -1,4 +1,5 @@
 import * as fse from 'fs-extra';
+import i18n from '@rosmarinus/i18n';
 import type { Context, Params } from './types';
 import { checkout } from './flow/checkout';
 import { PkgManager, LOCK_FILE_MAP, VersionMode, TestNpm } from './enum';
@@ -34,7 +35,7 @@ export async function loadContext(params: Params): Promise<Context> {
       config.master && (master = config.master);
       config.testNpm && (testNpm = config.testNpm);
     } catch (e) {
-      console.warn('配置文件解析失败，将使用默认配置');
+      console.warn(i18n().t('local-publish-tool.config-fail'));
     }
 
     const config = await fse.readJSON(params.config);
@@ -61,7 +62,7 @@ export async function loadContext(params: Params): Promise<Context> {
 
       if (numFailedTests !== 0) {
         // 单测不通过
-        console.error('单测不通过，请检查单测结果');
+        console.error(i18n().t('local-publish-tool.jest-fail'));
         process.exit(1);
       }
     },

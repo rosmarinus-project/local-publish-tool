@@ -1,4 +1,5 @@
 import shell from 'shelljs';
+import i18n from '@rosmarinus/i18n';
 import { VersionMode } from '../enum';
 
 export function changePackageVersion(versionMode: VersionMode, versionInfo?: string, cwd?: string) {
@@ -6,5 +7,5 @@ export function changePackageVersion(versionMode: VersionMode, versionInfo?: str
     .exec(`npm version ${versionMode}  -m "${versionInfo || ''}"`, { cwd, silent: true })
     .stdout.trim();
 
-  console.log(`已生成新版本号: ${newVersion}`);
+  console.log(`${i18n().t('local-publish-tool.new-version')}: ${newVersion}`);
 }

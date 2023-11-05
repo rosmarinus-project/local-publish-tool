@@ -1,4 +1,5 @@
 import shell from 'shelljs';
+import i18n from '@rosmarinus/i18n';
 import { LOCK_FILE_MAP, PkgManager } from '../enum';
 
 export interface PublishParams {
@@ -19,10 +20,10 @@ export function publish(params: PublishParams) {
   let commitMsg = '';
 
   if (hasPackageLock) {
-    console.log(`提交 ${LOCK_FILE_MAP[params.pkgManager]}`);
+    console.log(`${i18n().t('local-publish-tool.commit')} ${LOCK_FILE_MAP[params.pkgManager]}`);
     commitMsg = `feat: change ${LOCK_FILE_MAP[params.pkgManager]}`;
   } else {
-    console.log(`${LOCK_FILE_MAP[params.pkgManager]} 已为最新`);
+    console.log(`${LOCK_FILE_MAP[params.pkgManager]} ${i18n().t('local-publish-tool.latest')}`);
   }
 
   if (commitMsg) {
@@ -30,7 +31,7 @@ export function publish(params: PublishParams) {
   }
 
   if (shell.exec(`git diff ${params.master} origin/${params.master}`, { cwd, silent: true }).stdout) {
-    console.log(`本地主干 ${params.master} 与远端有差异，开始推送代码...`);
+    console.log(i18n().t('local-publish-tool.push', params.master));
     shell.exec('git push', { cwd, silent: true });
   }
 
@@ -38,7 +39,7 @@ export function publish(params: PublishParams) {
   const tagGit = shell.exec('git ls-remote', { cwd, silent: true }).stdout.includes(`refs/tags/v${params.version}`);
 
   if (!tagGit) {
-    console.log(`正在推送 tag v${params.version}`);
+    console.log(i18n().t('local-publish-tool.push-tag', params.version));
     shell.exec(`git push origin "v${params.version}"`, { cwd, silent: true });
   }
 }
