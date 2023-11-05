@@ -66,8 +66,14 @@ export async function loadContext(params: Params): Promise<Context> {
       }
     },
     publish(versionInfo?: string) {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-      publish({ cwd, pkgManager, version: require(`${cwd}/package.json`).version, versionInfo });
+      publish({
+        cwd,
+        pkgManager,
+        // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+        version: require(`${cwd}/package.json`).version,
+        versionInfo,
+        master,
+      });
     },
   };
 }

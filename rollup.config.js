@@ -3,12 +3,13 @@ import pkg from './package.json';
 
 const external = Object.keys(pkg.dependencies);
 
-function getConfig(format) {
+function getConfig(format, banner) {
   return {
     input: 'src/index.ts',
     output: {
       file: `dist/${format}/index.js`,
       format,
+      banner,
       sourcemap: true,
     },
     external,
@@ -20,4 +21,4 @@ function getConfig(format) {
   };
 }
 
-export default [getConfig('cjs'), getConfig('es')];
+export default [getConfig('cjs', '#!/usr/bin/env node'), getConfig('es')];

@@ -1,10 +1,5 @@
 import type { VersionMode } from './enum';
 
-export interface Answer {
-  version: VersionMode;
-  features: string;
-}
-
 export interface Params {
   config: string;
 }

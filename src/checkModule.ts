@@ -1,4 +1,4 @@
-export default function checkModule(npmName: string): boolean {
+export default function (npmName: string): boolean {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require(npmName);

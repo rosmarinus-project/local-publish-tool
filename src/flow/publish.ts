@@ -6,43 +6,41 @@ export interface PublishParams {
   pkgManager: PkgManager;
   version: string;
   versionInfo?: string;
+  master: string;
 }
 
 export function publish(params: PublishParams) {
   const { cwd } = params;
 
-  shell.exec('git add package.json', { cwd });
-  shell.exec(`git add ${params.pkgManager}`, { cwd });
-  const changeGit = shell.exec('git diff --cached --name-only', { cwd }).stdout;
+  shell.exec(`git add ${LOCK_FILE_MAP[params.pkgManager]}`, { cwd });
+  const changeGit = shell.exec('git diff --cached --name-only', { cwd, silent: true }).stdout;
 
-  const hasPackage = changeGit.includes('package.json');
   const hasPackageLock = changeGit.includes(LOCK_FILE_MAP[params.pkgManager]);
 
   let commitMsg = '';
 
-  if (hasPackage && hasPackageLock) {
-    console.log(`提交版本号更改以及 ${LOCK_FILE_MAP[params.pkgManager]}`);
-    commitMsg = `feat: change version and ${LOCK_FILE_MAP[params.pkgManager]}`;
-  } else if (hasPackage) {
-    console.log('提交版本号更改');
-    commitMsg = 'feat: change version';
-  } else if (hasPackageLock) {
+  if (hasPackageLock) {
     console.log(`提交 ${LOCK_FILE_MAP[params.pkgManager]}`);
     commitMsg = `feat: change ${LOCK_FILE_MAP[params.pkgManager]}`;
   } else {
-    console.log(`无版本号更改，${LOCK_FILE_MAP[params.pkgManager]} 已为最新`);
+    console.log(`${LOCK_FILE_MAP[params.pkgManager]} 已为最新`);
   }
 
   if (commitMsg) {
     shell.exec(`git commit -m "${commitMsg}"`, { cwd });
-    shell.exec('git push', { cwd });
+  }
+
+  if (shell.exec(`git diff ${params.master} origin/${params.master}`, { cwd, silent: true }).stdout) {
+    console.log(`本地主干 ${params.master} 与远端有差异，开始推送代码...`);
+    shell.exec('git push', { cwd, silent: true });
   }
 
   // 打 tag
-  const tagGit = shell.exec('git ls-remote', { cwd }).stdout.includes(`refs/tags/v${params.version}`);
+  const tagGit = shell.exec('git ls-remote', { cwd, silent: true }).stdout.includes(`refs/tags/v${params.version}`);
 
   if (!tagGit) {
-    shell.exec(`git tag -a "v${params.version}" -m "${params.versionInfo || ''}"`, { cwd });
-    shell.exec(`git push origin "v${params.version}"`, { cwd });
+    // shell.exec(`git tag -a "v${params.version}" -m "${params.versionInfo || ''}"`, { cwd });
+    console.log(`正在推送 tag v${params.version}`);
+    shell.exec(`git push origin "v${params.version}"`, { cwd, silent: true });
   }
 }
