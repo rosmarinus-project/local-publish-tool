@@ -10,7 +10,4 @@ module.exports = {
     project: './tsconfig.eslint.json',
   },
   globals: {},
-  rules: {
-    curly: 'error',
-  },
 };
