@@ -11,7 +11,7 @@ export interface PublishParams {
 export function publish(params: PublishParams) {
   const { cwd } = params;
 
-  shell.exec(`git add ${LOCK_FILE_MAP[params.pkgManager]}`, { cwd });
+  shell.exec(`git add ${LOCK_FILE_MAP[params.pkgManager]}`, { cwd, silent: true });
   const changeGit = shell.exec('git diff --cached --name-only', { cwd, silent: true }).stdout;
 
   const hasPackageLock = changeGit.includes(LOCK_FILE_MAP[params.pkgManager]);
