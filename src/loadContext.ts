@@ -50,8 +50,8 @@ export async function loadContext(params: Params): Promise<Context> {
         cwd,
       });
     },
-    version(versionMode: VersionMode) {
-      changePackageVersion(versionMode, cwd);
+    version(versionMode: VersionMode, versionInfo?: string) {
+      changePackageVersion(versionMode, versionInfo, cwd);
     },
     async test() {
       const { numFailedTests } = await runUnitTest({
@@ -65,13 +65,12 @@ export async function loadContext(params: Params): Promise<Context> {
         process.exit(1);
       }
     },
-    publish(versionInfo?: string) {
+    publish() {
       publish({
         cwd,
         pkgManager,
         // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
         version: require(`${cwd}/package.json`).version,
-        versionInfo,
         master,
       });
     },

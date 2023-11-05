@@ -5,7 +5,6 @@ export interface PublishParams {
   cwd: string;
   pkgManager: PkgManager;
   version: string;
-  versionInfo?: string;
   master: string;
 }
 
@@ -39,7 +38,6 @@ export function publish(params: PublishParams) {
   const tagGit = shell.exec('git ls-remote', { cwd, silent: true }).stdout.includes(`refs/tags/v${params.version}`);
 
   if (!tagGit) {
-    // shell.exec(`git tag -a "v${params.version}" -m "${params.versionInfo || ''}"`, { cwd });
     console.log(`正在推送 tag v${params.version}`);
     shell.exec(`git push origin "v${params.version}"`, { cwd, silent: true });
   }

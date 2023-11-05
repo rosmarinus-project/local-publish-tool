@@ -17,9 +17,9 @@ async function main() {
   ).trim();
 
   context.checkout();
-  context.version(version);
+  context.version(version, features);
   await context.test();
-  context.publish(features);
+  context.publish();
 }
 
 main();

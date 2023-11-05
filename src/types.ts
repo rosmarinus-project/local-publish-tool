@@ -6,7 +6,7 @@ export interface Params {
 
 export interface Context {
   checkout(): void;
-  version(versionMode: VersionMode): void;
+  version(versionMode: VersionMode, versionInfo?: string): void;
   test(): Promise<void>;
-  publish(versionInfo?: string): void;
+  publish(): void;
 }
