@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "rollup -c rollup.config.js -w",
     "build": "rollup -c rollup.config.js",
-    "release": "npm run build && rosmarinus-publish",
+    "release": "npm run build && node dist/cjs/index.js",
     "test:unit": "jest --runInBand"
   },
   "files": [
