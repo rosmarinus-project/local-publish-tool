@@ -1,7 +1,10 @@
 import typescript from '@rollup/plugin-typescript';
-import pkg from './package.json';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import json from '@rollup/plugin-json';
+import babel from '@rollup/plugin-babel';
 
-const external = Object.keys(pkg.dependencies);
+const external = [];
 
 function getConfig(format, banner) {
   return {
@@ -14,8 +17,14 @@ function getConfig(format, banner) {
     },
     external,
     plugins: [
+      commonjs(),
+      resolve(),
+      json(),
       typescript({
         tsconfig: './tsconfig.json',
+      }),
+      babel({
+        babelHelpers: 'bundled',
       }),
     ],
   };
