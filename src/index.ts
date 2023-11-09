@@ -18,8 +18,8 @@ async function main() {
   ).trim();
 
   context.checkout();
-  context.version(version, features);
   await context.test();
+  context.version(version, features);
   context.publish();
 }
 
