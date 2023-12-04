@@ -1,11 +1,8 @@
 import common from '@rosmarinus/common-plugins';
 
-const external = ['shelljs'];
+const external = ['shelljs', 'conventional-changelog'];
 
 /**
- *
- * @param {*} format
- * @param {*} banner
  * @returns {import('rollup').RollupOptions}
  */
 function getConfig(format, banner) {
@@ -16,7 +13,6 @@ function getConfig(format, banner) {
       format,
       banner,
       sourcemap: true,
-      inlineDynamicImports: true,
     },
     external,
     plugins: [common()],
