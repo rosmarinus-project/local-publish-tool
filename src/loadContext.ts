@@ -1,14 +1,14 @@
-import * as fse from 'fs-extra';
+import { existsSync, readJSON } from 'fs-extra';
 import i18n from '@rosmarinus/i18n';
 import type { Context, Params } from './types';
 import { PkgManager, LOCK_FILE_MAP, TestNpm } from './enum';
 
 function getPkgManger(cwd: string) {
-  if (fse.existsSync(`${cwd}/${LOCK_FILE_MAP[PkgManager.pnpm]}`)) {
+  if (existsSync(`${cwd}/${LOCK_FILE_MAP[PkgManager.pnpm]}`)) {
     return PkgManager.pnpm;
   }
 
-  if (fse.existsSync(`${cwd}/${LOCK_FILE_MAP[PkgManager.yarn]}`)) {
+  if (existsSync(`${cwd}/${LOCK_FILE_MAP[PkgManager.yarn]}`)) {
     return PkgManager.yarn;
   }
 
@@ -21,7 +21,7 @@ export async function loadContext(params: Params): Promise<Context> {
   let master = 'main';
   let testNpm = TestNpm.jest;
 
-  if (params.config && fse.existsSync(params.config)) {
+  if (params.config && existsSync(params.config)) {
     try {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const config = await require(params.config);
@@ -34,7 +34,7 @@ export async function loadContext(params: Params): Promise<Context> {
       console.warn(i18n().t('local-publish-tool.config-fail'));
     }
 
-    const config = await fse.readJSON(params.config);
+    const config = await readJSON(params.config);
 
     return config;
   }

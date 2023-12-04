@@ -2,6 +2,12 @@ import common from '@rosmarinus/common-plugins';
 
 const external = ['shelljs'];
 
+/**
+ *
+ * @param {*} format
+ * @param {*} banner
+ * @returns {import('rollup').RollupOptions}
+ */
 function getConfig(format, banner) {
   return {
     input: 'src/index.ts',
@@ -10,6 +16,7 @@ function getConfig(format, banner) {
       format,
       banner,
       sourcemap: true,
+      inlineDynamicImports: true,
     },
     external,
     plugins: [common()],

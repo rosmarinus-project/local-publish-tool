@@ -1,15 +1,15 @@
 import { Writable } from 'stream';
 import conventionalChangelog from 'conventional-changelog';
-import * as fse from 'fs-extra';
+import { writeFile, existsSync, readFile } from 'fs-extra';
 
 export async function buildChangelog() {
   console.log('updating changelog...');
   const content = await getContent();
 
-  const nowContent = fse.existsSync('CHANGELOG.md') ? await fse.readFile('CHANGELOG.md', 'utf-8') : '';
+  const nowContent = existsSync('CHANGELOG.md') ? await readFile('CHANGELOG.md', 'utf-8') : '';
   const newContent = content + nowContent;
 
-  await fse.writeFile('CHANGELOG.md', newContent);
+  await writeFile('CHANGELOG.md', newContent);
 }
 
 async function getContent() {
