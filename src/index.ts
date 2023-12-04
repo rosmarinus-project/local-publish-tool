@@ -7,6 +7,7 @@ import { changePackageVersion } from './flow/version';
 import { runUnitTest } from './flow/test';
 import { publish } from './flow/publish';
 import { checkout } from './flow/checkout';
+import { buildChangelog } from './flow/changelog';
 
 async function main() {
   const params = await getParams();
@@ -32,12 +33,14 @@ async function main() {
     testNpm: context.testNpm,
   });
 
-  changePackageVersion(version, features, context.cwd);
+  await changePackageVersion(version, context.cwd);
+  await buildChangelog();
   publish({
     pkgManager: context.pkgManager,
     cwd: context.cwd,
     version: require(`${context.cwd}/package.json`).version,
     master: context.master,
+    features,
   });
 }
 
