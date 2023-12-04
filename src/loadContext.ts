@@ -1,11 +1,7 @@
 import * as fse from 'fs-extra';
 import i18n from '@rosmarinus/i18n';
 import type { Context, Params } from './types';
-import { checkout } from './flow/checkout';
-import { PkgManager, LOCK_FILE_MAP, VersionMode, TestNpm } from './enum';
-import { changePackageVersion } from './flow/version';
-import { runUnitTest } from './flow/test';
-import { publish } from './flow/publish';
+import { PkgManager, LOCK_FILE_MAP, TestNpm } from './enum';
 
 function getPkgManger(cwd: string) {
   if (fse.existsSync(`${cwd}/${LOCK_FILE_MAP[PkgManager.pnpm]}`)) {
@@ -44,36 +40,9 @@ export async function loadContext(params: Params): Promise<Context> {
   }
 
   return {
-    checkout() {
-      checkout({
-        master,
-        pkgManager,
-        cwd,
-      });
-    },
-    version(versionMode: VersionMode, versionInfo?: string) {
-      changePackageVersion(versionMode, versionInfo, cwd);
-    },
-    async test() {
-      const { numFailedTests } = await runUnitTest({
-        cwd,
-        testNpm,
-      });
-
-      if (numFailedTests !== 0) {
-        // 单测不通过
-        console.error(i18n().t('local-publish-tool.jest-fail'));
-        process.exit(1);
-      }
-    },
-    publish() {
-      publish({
-        cwd,
-        pkgManager,
-        // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-        version: require(`${cwd}/package.json`).version,
-        master,
-      });
-    },
+    cwd,
+    pkgManager,
+    master,
+    testNpm,
   };
 }

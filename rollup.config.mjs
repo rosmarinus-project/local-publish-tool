@@ -1,8 +1,4 @@
-import typescript from '@rollup/plugin-typescript';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import json from '@rollup/plugin-json';
-import babel from '@rollup/plugin-babel';
+import common from '@rosmarinus/common-plugins';
 
 const external = ['shelljs'];
 
@@ -16,17 +12,7 @@ function getConfig(format, banner) {
       sourcemap: true,
     },
     external,
-    plugins: [
-      commonjs(),
-      resolve(),
-      json(),
-      typescript({
-        tsconfig: './tsconfig.json',
-      }),
-      babel({
-        babelHelpers: 'bundled',
-      }),
-    ],
+    plugins: [common()],
   };
 }
 

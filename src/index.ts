@@ -3,6 +3,10 @@ import i18n from '@rosmarinus/i18n';
 import { getParams } from './cmd';
 import { loadContext } from './loadContext';
 import { VersionMode } from './enum';
+import { changePackageVersion } from './flow/version';
+import { runUnitTest } from './flow/test';
+import { publish } from './flow/publish';
+import { checkout } from './flow/checkout';
 
 async function main() {
   const params = await getParams();
@@ -17,10 +21,24 @@ async function main() {
     })
   ).trim();
 
-  context.checkout();
-  await context.test();
-  context.version(version, features);
-  context.publish();
+  checkout({
+    master: context.master,
+    pkgManager: context.pkgManager,
+    cwd: context.cwd,
+  });
+
+  await runUnitTest({
+    cwd: context.cwd,
+    testNpm: context.testNpm,
+  });
+
+  changePackageVersion(version, features, context.cwd);
+  publish({
+    pkgManager: context.pkgManager,
+    cwd: context.cwd,
+    version: require(`${context.cwd}/package.json`).version,
+    master: context.master,
+  });
 }
 
 main();
