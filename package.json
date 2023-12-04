@@ -36,6 +36,7 @@
     "@inquirer/prompts": "^3.2.0",
     "@rosmarinus/i18n": "^1.2.1",
     "commander": "^10.0.1",
+    "conventional-changelog": "^5.1.0",
     "fs-extra": "^10.0.0",
     "shelljs": "^0.8.5",
     "tslib": "^2.6.2"
@@ -50,6 +51,7 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.5",
     "@rosmarinus/eslint-config-rosmarinus": "^1.0.1",
+    "@types/conventional-changelog": "^3.1.5",
     "@types/fs-extra": "^9.0.12",
     "@types/jest": "^27.4.0",
     "@types/node": "^18.14.0",
